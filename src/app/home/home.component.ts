@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     const rawSearchedCity: string = this.fb.controls['search-bar'].value;
     this.cityName = rawSearchedCity.toLocaleUpperCase();
     const searchedCity: string = rawSearchedCity.toLowerCase().replaceAll(' ', '-');
-    const requestUrl = `${environment.apiUrl}&q=${searchedCity}&days=2&aqi=no&alerts=no`
+    const requestUrl = `https://api.weatherapi.com/v1/forecast.json?key=${environment.apiKey}&q=${searchedCity}&days=2&aqi=no&alerts=no`
 
     try {
       const response: Observable<any> = this.httpClient.get(requestUrl);
