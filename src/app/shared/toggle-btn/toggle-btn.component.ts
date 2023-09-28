@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {TempUnitToggleService} from "../../service/temp-unit-toggle.service";
 import {Subscription} from "rxjs";
 
@@ -12,8 +12,7 @@ export class ToggleBtnComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    private tempUnitService: TempUnitToggleService,
-    private elem: ElementRef
+    private tempUnitService: TempUnitToggleService
   ) {
     this.subscription = this.tempUnitService.fahrenheitUnit$.subscribe(
       (value) => {
@@ -31,7 +30,5 @@ export class ToggleBtnComponent implements OnInit, OnDestroy {
   onCheckboxChange() {
     this.isChecked = !this.isChecked;
     this.tempUnitService.setFahrenheitUnit(this.isChecked);
-    // this.elem.nativeElement.querySelector('#checkbox').click();
-    console.log(this.elem.nativeElement.querySelector('#checkbox'))
   }
 }
