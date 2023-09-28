@@ -1,0 +1,101 @@
+<div class="main">
+  <div class="w-100 mx-auto mb-3 py-3 ">
+    <div class="d-flex flex-column justify-content-center align-items-center mb-3">
+      <h1>
+        How is the weather?
+      </h1>
+      <p>
+        Search for the name of a city and find out more.
+      </p>
+      <form [formGroup]="fb" class="mb-3 w-100" (submit)="getWeatherInfo()">
+        <input
+          formControlName="search-bar"
+          type="text"
+          class="form-control form-control-dark mb-3"
+          [placeholder]="isInputEmpty ? 'Enter the city name...' : ''"
+          (focus)="onFocusInput()"
+          (blur)="onBlurInput($event)"
+          aria-label="Pesquisar">
+        <button type="submit" class="btn btn-outline-light w-100">Search</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="w-100 text-center mx-auto" *ngIf="cityInfo">
+    <div class="card d-flex justify-content-center align-items-center py-3">
+      <div class="w-100">
+          <h3 class="city">{{ cityInfo.location.name }}</h3>
+          <p class="state">{{ cityInfo.location.region }} - {{ cityInfo.location.country }}</p>
+      </div>
+      <div class="w-100 mb-1">
+          <p class="time">
+          {{ today | date: 'dd/MM/yy' }} - {{ today | date: 'HH:mm' }}
+          </p>
+      </div>
+      <div class="w-100 d-flex flex-row flex-wrap gap-3 align-items-center justify-content-center pointer">
+        <div class="d-flex flex-column specs" title="Temperature">
+          <span class="material-symbols-outlined icon mb-1">thermostat</span>
+          <p class="values">{{ fahrenheitUnit ? cityInfo.current.temp_f : cityInfo.current.temp_c }}<sup class="units">{{ fahrenheitUnit ? '°F' : '°C' }}</sup></p>
+        </div>
+        <div class="d-flex flex-column specs" title="Wind Speed">
+          <span class="material-symbols-outlined icon mb-1">air</span>
+          <p class="values">{{ cityInfo.current.wind_kph }}<sup class="units sml">kph</sup></p>
+        </div>
+        <div class="d-flex flex-column specs" title="Wind Direction">
+          <span class="material-symbols-outlined icon mb-1" [style.transform]="'rotate(' + cityInfo.current.wind_degree + 'deg)'">trending_flat</span>
+          <p class="values">{{ cityInfo.current.wind_degree }}<sup class="units">°</sup></p>
+        </div>
+        <div class="d-flex flex-column specs" title="Humidity">
+          <span class="material-symbols-outlined icon mb-1">water_drop</span>
+          <p class="values">{{ cityInfo.current.humidity }}<sup class="units">%</sup></p>
+        </div>
+        <div class="d-flex flex-column specs" title="Precipitation">
+          <span class="material-symbols-outlined icon mb-1">rainy</span>
+          <p class="values">{{ cityInfo.current.precip_mm }}<sup class="units sml">mm</sup></p>
+        </div>
+        <div class="d-flex flex-column specs" title="UV Index">
+          <span class="material-symbols-outlined icon mb-1">sunny</span>
+          <p class="values">{{ cityInfo.current.uv }}<sup class="units">uv</sup></p>
+        </div>
+      </div>
+      <div class="w-100 mt-2">
+          <h4>Forecast Weather</h4>
+      </div>
+      <div class="w-100 d-flex flex-row flex-wrap gap-3 align-items-center justify-content-center">
+        <div class="forecast-box d-flex flex-column align-items-center">
+          <p class="date mb-1">
+            Date: {{ tomorrow | date: 'dd/MM/yy' }}
+          </p>
+          <div class="d-flex flex-row align-items-center gap-1 justify-content-center" title="Temperatura">
+            <span class="material-symbols-outlined icon horizontal-icon">thermostat</span>
+            <p class="values me-2">{{ fahrenheitUnit ? cityInfo.forecast.forecastday[0].day.avgtemp_f : cityInfo.forecast.forecastday[0].day.avgtemp_c }}<sup class="units">{{ fahrenheitUnit ? '°F' : '°C' }}</sup></p>
+            <div class="d-flex flex-column align-items-start">
+              <p class="max-min-values">Max: {{ fahrenheitUnit ? cityInfo.forecast.forecastday[0].day.maxtemp_f : cityInfo.forecast.forecastday[0].day.maxtemp_c }}</p>
+              <p class="max-min-values">Min: {{ fahrenheitUnit ? cityInfo.forecast.forecastday[0].day.mintemp_f : cityInfo.forecast.forecastday[0].day.mintemp_c }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="forecast-box d-flex flex-column align-items-center">
+          <p class="date mb-1">
+            Date: {{ lastDay | date: 'dd/MM/yy' }}
+          </p>
+          <div class="d-flex flex-row align-items-center gap-1 justify-content-center" title="Temperatura">
+            <span class="material-symbols-outlined icon horizontal-icon">thermostat</span>
+            <p class="values me-2">{{ fahrenheitUnit ? cityInfo.forecast.forecastday[1].day.avgtemp_f : cityInfo.forecast.forecastday[1].day.avgtemp_c }}<sup class="units">{{ fahrenheitUnit ? '°F' : '°C' }}</sup></p>
+            <div class="d-flex flex-column align-items-start">
+              <p class="max-min-values">Max: {{ fahrenheitUnit ? cityInfo.forecast.forecastday[1].day.maxtemp_f : cityInfo.forecast.forecastday[1].day.maxtemp_c }}</p>
+              <p class="max-min-values">Min: {{ fahrenheitUnit ? cityInfo.forecast.forecastday[1].day.mintemp_f : cityInfo.forecast.forecastday[1].day.mintemp_c }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="m-0 mt-2 provider">Provided by Weather API</p>
+    </div>
+  </div>
+
+  <div class="w-100 text-center mx-auto" *ngIf="searchingError">
+    <h4>Sorry! No matching location found.</h4>
+    <p class="fs-5">Please try another city.</p>
+  </div>
+</div>
