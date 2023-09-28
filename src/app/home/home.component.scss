@@ -105,7 +105,7 @@ input {
 
 div.main {
   width: 580px;
-  height: calc(100vh - (67px * 2));
+  min-height: calc(100vh - (67px * 2));
   margin: 0 auto;
   display: flex;
   flex-direction: column;
